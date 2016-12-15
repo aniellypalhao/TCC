@@ -21,6 +21,9 @@ public class Ponto {
     public Ponto(Ponto point) {
         this.x = point.getX();
         this.y = point.getY();
+        
+        
+        
     }
 
     /**
