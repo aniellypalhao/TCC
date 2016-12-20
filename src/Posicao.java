@@ -10,7 +10,7 @@ public class Posicao extends Estimativa {
      * @param estimativa copia a estimativa.
      */
     public Posicao(Posicao estimativa) {
-        this.posicao.update(estimativa.getPosicao());
+        this.posicao.atualizar(estimativa.getPosicao());
         this.confiancaInicial = estimativa.getConfiancaInicial();
         this.cicloDaEstimativa = estimativa.getCicloDaEstimativa();
     }
@@ -23,7 +23,7 @@ public class Posicao extends Estimativa {
      * @param ciclo em que a posição esta sendo estimada
      */
     public Posicao(Ponto p, double confidence, int ciclo) {
-        this.posicao.update(p);
+        this.posicao.atualizar(p);
         this.confiancaInicial = confidence;
         this.cicloDaEstimativa = ciclo;
     }
@@ -120,6 +120,6 @@ public class Posicao extends Estimativa {
         this.confiancaInicial = confianca;
         this.cicloDaEstimativa = ciclo;
         this.posicao.atualizar(x, y);
-        double distancia = this.posicao.distanceTo(oldPosition);
+        double distancia = this.posicao.distanciaAoPonto(oldPosition);
     }
 }

@@ -9,7 +9,7 @@
 /**
  * Generic 2D Vector class.
  */
-public class Vector2D {
+public class Vetor2D {
     private double x;
     private double y;
     private final double EPISLON = 0.0001;
@@ -19,7 +19,7 @@ public class Vector2D {
     /**
      * Empty constructor.
      */
-    public Vector2D() {
+    public Vetor2D() {
         this.reset();
     }
     
@@ -29,11 +29,11 @@ public class Vector2D {
      *  
      * @param magnitude
      */
-    public Vector2D(double magnitude) {
+    public Vetor2D(double magnitude) {
         this.x = magnitude;
     }
     
-    public Vector2D(Vector2D vec) {
+    public Vetor2D(Vetor2D vec) {
         this.x = vec.getX();
         this.y = vec.getY();
     }
@@ -44,7 +44,7 @@ public class Vector2D {
      * @param x the x-coordinate of the vector
      * @param y the y-coordinate of the vector
      */
-    public Vector2D(double x, double y) {
+    public Vetor2D(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -57,8 +57,8 @@ public class Vector2D {
      * 
      * @return the zero vector
      */
-    public static Vector2D ZeroVector() {
-        return new Vector2D(0.0, 0.0);
+    public static Vetor2D ZeroVector() {
+        return new Vetor2D(0.0, 0.0);
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ public class Vector2D {
         this.y = mag * Math.sin(dir);
     }
     
-    public final Vector2D rotate(double angulo){
+    public final Vetor2D rotate(double angulo){
         double mag = this.magnitude();
         double dir = this.direction() + angulo;
         this.setCoordPolar(dir, mag);
@@ -133,10 +133,10 @@ public class Vector2D {
      * @param dir direction in radians of the other vector
      * @param mag magnitude of the other vector
      */
-    public final Vector2D addPolar(double dir, double mag) {
+    public final Vetor2D addPolar(double dir, double mag) {
         double x = mag * Math.cos(dir);
         double y = mag * Math.sin(dir);
-        return new Vector2D(x, y).add(this);
+        return new Vetor2D(x, y).add(this);
     }
     
     public final Ponto asPoint(){
@@ -158,16 +158,16 @@ public class Vector2D {
      * @param that the other direction vector
      * @return the result as a direction vector
      */
-    public final Vector2D add(Vector2D that) {
-        return new Vector2D(this.x + that.getX(), this.y + that.getY());
+    public final Vetor2D add(Vetor2D that) {
+        return new Vetor2D(this.x + that.getX(), this.y + that.getY());
     }
     
-    public final void mais(Vector2D vet){
+    public final void mais(Vetor2D vet){
         this.x += vet.getX();
         this.y += vet.getY();
     }
     
-    public final void menos(Vector2D vet){
+    public final void menos(Vetor2D vet){
         this.x -= vet.getX();
         this.y -= vet.getY();
     }

@@ -1,28 +1,22 @@
-/** @file Flag.java
- * Representation of the flags that define the field.
- *
- * @author Team F(utility)
- */
-
 /**
- * Extension of StationaryObject that represents an object on the visible playing field.
+ * Classe Flag que extende ObjetoFixo para representar uma flag
  */
-public class Flag extends StationaryObject {
+public class Flag extends ObjetoFixo {
     
     /**
-     * This constructor automatically assign's the flag's position based on its ObjectId.
+     * This constructor automatically assign's the flag's posicao based on its ObjectId.
      * 
      * @param id the flag's ObjectId
      */
     public Flag(String id) {
         this.id = id;
-        this.position = this.setPosition();
+        this.posicao = this.setPosition();
     }
 
     /**
-     * Returns this flag's position based on its ObjectId.
+     * Returns this flag's posicao based on its ObjectId.
      * 
-     * @return this flag's position based on its ObjectId
+     * @return this flag's posicao based on its ObjectId
      */
     protected Posicao setPosition() {
     	//A switch{} would be better, but not sure if we will have JRE 1.7 available

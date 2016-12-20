@@ -8,7 +8,7 @@
 /**
  *  Encapsulates information from `sense_body` messages from the server.
  */
-public class SenseInfo extends Info {
+public class InfoCorpo extends Info {
 
 	double stamina;
 	double effort;
@@ -42,8 +42,8 @@ public class SenseInfo extends Info {
 	 * 
 	 * @param info the sense info to copy to
 	 */
-	public void copy(SenseInfo info){
-		info.time = time;
+	public void copy(InfoCorpo info){
+		info.ciclo = ciclo;
 		info.stamina = stamina;
 		info.effort = effort;
 		info.staminaCapacity = staminaCapacity;

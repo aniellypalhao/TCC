@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
@@ -73,7 +68,7 @@ public class Reta {
         }
         dC =  - dA * p2.getY()  - dB * p2.getX();
         
-        return new Reta( dA, dB, dC );        
+        return new Reta( dA, dB, dC );
     }
     
     /**
@@ -81,7 +76,7 @@ public class Reta {
      */
     public static Reta criarRetaAPartirDaPosicaoEAngulo(Ponto p, double angulo){
         Ponto p2        = p;
-        Vector2D vet    = new Vector2D();
+        Vetor2D vet    = new Vetor2D();
         vet.setCoordPolar(angulo, 1);
         p2.mais(vet.asPoint());
         

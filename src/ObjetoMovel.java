@@ -7,14 +7,14 @@
 
 
 /**
- * Extension of FieldObject representing an object that can move.
+ * Extension of Objetos representing an object that can move.
  */
-public class MobileObject extends FieldObject{
+public class ObjetoMovel extends Objetos{
 
 	/**
-	 * Default constructor, initializes with default FieldObject values.
+	 * Default constructor, initializes with default Objetos values.
 	 */
-    public MobileObject() {}
+    public ObjetoMovel() {}
 	
     /**
      * Default mobile object constructor.
@@ -22,7 +22,7 @@ public class MobileObject extends FieldObject{
      * @param x an x-coordinate for the object's initial position
      * @param y a y-coordinate for the object's initial position
      */
-    public MobileObject(double x, double y) {
+    public ObjetoMovel(double x, double y) {
     	super(x, y);
     }
 }

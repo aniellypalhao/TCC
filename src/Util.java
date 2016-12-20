@@ -10,9 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Futil: F(utility) utilities.
+ * Util: F(utility) utilities.
  */
-public final class Futil {
+public final class Util {
     
     /**
      * Extracts the arguments from a correctly-formatted object info string.
@@ -73,7 +73,7 @@ public final class Futil {
      * @param currentTime the current soccer server time step
      * @return estimated acceleration of the player in the given time step offset by the given offset
      */
-   /* public static VetorDeAceleracao estimateAccelerationOf(FieldObject obj, int timeOffset, int currentTime) {
+   /* public static VetorDeAceleracao estimateAccelerationOf(Objetos obj, int timeOffset, int currentTime) {
         if (timeOffset < -1) {
             return VetorDeAceleracao.ZeroVector();
         }
@@ -99,21 +99,21 @@ public final class Futil {
      * @param currentTime the current soccer server time step
      * @return estimated position of the player in the given time step offset by the given offset
      */
-   /* public static Posicao estimatePositionOf(FieldObject obj, int timeOffset, int currentTime) {
+   /* public static Posicao estimatePositionOf(Objetos obj, int timeOffset, int currentTime) {
         if (timeOffset < -1) {
-            return Posicao.Unknown(currentTime);
+            return Posicao.Desconhecido(currentTime);
         }
         else if (timeOffset == -1) {
             return obj.prevPosition;
         }
         else if (timeOffset == 0) {
-            return obj.position;
+            return obj.posicao;
         }
         else {
-            Posicao est = new Posicao(obj.position);
+            Posicao est = new Posicao(obj.posicao);
             for (int i=0; i<timeOffset; i++) {
-                VetorVelocidade v = Futil.estimateVelocityOf(obj, i, currentTime);
-                VetorDeAceleracao a = Futil.estimateAccelerationOf(obj, i, currentTime);
+                VetorVelocidade v = Util.estimateVelocityOf(obj, i, currentTime);
+                VetorDeAceleracao a = Util.estimateAccelerationOf(obj, i, currentTime);
                 double x = est.getX() + v.getX() + a.getX();
                 double y = est.getY() + v.getY() + a.getY();
                 double confidence = est.getConfianca(currentTime + i) * 0.95;
@@ -128,20 +128,20 @@ public final class Futil {
      * @param angulo o ângulo (em graus) para realizar a rotação
      * @return um novo ponto rotacionado (angulo)º em relação ao ponto primitivo;
      */
-    public static Point rotacionarPonto(Point pontoPrimitivo, double angulo){     
-        return new Point(pontoPrimitivo.getX() * Math.cos(Math.toRadians(angulo)) - pontoPrimitivo.getY() * Math.sin(Math.toRadians(angulo)),
+    public static Ponto rotacionarPonto(Ponto pontoPrimitivo, double angulo){     
+        return new Ponto(pontoPrimitivo.getX() * Math.cos(Math.toRadians(angulo)) - pontoPrimitivo.getY() * Math.sin(Math.toRadians(angulo)),
             pontoPrimitivo.getX() * Math.sin(Math.toRadians(angulo)) + pontoPrimitivo.getY() * Math.cos(Math.toRadians(angulo)));
     }
        
     /**
-     * Estimates the velocity of a FieldObject at some time offset.
+     * Estimates the velocity of a Objetos at some ciclo offset.
      * 
-     * @param obj the FieldObject to estimate the velocity for
-     * @param timeOffset offset from the current time step for the time step to estimate for
-     * @param currentTime the current soccer server time step
+     * @param obj the Objetos to estimate the velocity for
+     * @param timeOffset offset from the current ciclo step for the ciclo step to estimate for
+     * @param currentTime the current soccer server ciclo step
      * @return the estimated velocity of the object
      */
-    public static VetorVelocidade estimateVelocityOf(FieldObject obj, int timeOffset, int currentTime) {
+    public static VetorVelocidade estimateVelocityOf(Objetos obj, int timeOffset, int currentTime) {
         if (timeOffset < 0) {
             return new VetorVelocidade();
         }
@@ -154,7 +154,7 @@ public final class Futil {
         }
     }
     
-    public static double distanciaEntre2Objetos(FieldObject objeto1, FieldObject objeto2) {
+    public static double distanciaEntre2Objetos(Objetos objeto1, Objetos objeto2) {
         double anguloRadiano;
         
         if(objeto2 == null || objeto1 == null)
@@ -167,18 +167,18 @@ public final class Futil {
     }
     
     /**
-     * Given a correctly-formatted `see` or `sense_body` message, returns the soccer server time
-     * contained within the message.
+     * Given a correctly-formatted `see` or `sense_body` message, returns the soccer server ciclo
+ contained within the message.
      * 
      * @param s correctly-formatted `see` or `sense_body` message
-     * @return soccer server time contained within the message
+     * @return soccer server ciclo contained within the message
      */
     public static final int extractTime(String s) {
         if (!isCorrectlyFormatted(s)) {
             return -1;
         }
         if (!s.startsWith("(see ") && !s.startsWith("(sense_body ")) {
-            Log.e("`extractTime` expected  a message starting with '(see' or '(sense_body', got: " + s);
+            System.out.println("`extractTime` expected  a message starting with '(see' or '(sense_body', got: " + s);
             return -1;
         }
         String timeArg = s.split("\\s")[1];
@@ -200,7 +200,7 @@ public final class Futil {
             return -1;
         }
         if (s.charAt(beginIndex) != '(') {
-            Log.e(s + " at index " + beginIndex + " is not '('.");
+            System.out.println(s + " at index " + beginIndex + " is not '('.");
             return -1;
         }
         int numOpenParens = 0;
@@ -219,7 +219,7 @@ public final class Futil {
                 }
             }
         }
-        Log.e("Could not find matching closing ')' for the '(' at index " + beginIndex + " in '" + s + "'.");
+        System.out.println("Could not find matching closing ')' for the '(' at index " + beginIndex + " in '" + s + "'.");
         return -1;
     }
     
@@ -246,11 +246,11 @@ public final class Futil {
     public static final boolean isCorrectlyFormatted(String s) {
         int numOpenParens = 0;
         if (s.charAt(0) != '(') {
-            Log.e("String starts with '" + s.charAt(0) + "', not '('. String: " + s);
+            System.out.println("String starts with '" + s.charAt(0) + "', not '('. String: " + s);
             return false;
         }
         if (s.charAt(s.length() - 1) != ')') {
-            Log.e("String ends with '" + s.charAt(s.length() - 1) + "', not ')'. String: " + s);
+            System.out.println("String ends with '" + s.charAt(s.length() - 1) + "', not ')'. String: " + s);
             return false;
         }
         for (int i = 0; i < s.length(); i++) {
@@ -260,13 +260,13 @@ public final class Futil {
             else if (s.charAt(i) == ')') {
                 numOpenParens--;
                 if (numOpenParens < 0) {
-                    Log.e("String has less than 0 open parentheses at some index: " + s);
+                    System.out.println("String has less than 0 open parentheses at some index: " + s);
                     return false;
                 }
             }
         }
         if (numOpenParens != 0) {
-            Log.e("String has unequal number of parentheses: " + s);
+            System.out.println("String has unequal number of parentheses: " + s);
         }
         return true;
     }
@@ -288,7 +288,7 @@ public final class Futil {
             beginIndex++;
         }
         String result = s.substring(beginIndex, endIndex);
-        if (!Futil.isCorrectlyFormatted(result)) {
+        if (!Util.isCorrectlyFormatted(result)) {
             return "";
         }
         return result;
@@ -419,8 +419,8 @@ public final class Futil {
                 );
 	}
         
-        public static double getPowerParaDash(Point ponto, double angulo, Vector2D velocidade, double effort, int ciclos){
-            double dist = ponto.asVector().rotate(-angulo).getX();
+        public static double getPowerParaDash(Ponto ponto, double angulo, Vetor2D velocidade, double effort, int ciclos){
+            double dist = ponto.umVetor().rotate(-angulo).getX();
             if (ciclos <= 0) ciclos = 1;
             double dAcc = getFirstSpeedFromDist(dist, ciclos, Configuracoes.JOGADOR_PARAMS.PLAYER_DECAY);
             
@@ -446,25 +446,25 @@ public final class Futil {
             return getFirstGeomSeries(dist, decay, ciclos);
         }
         
-        public static Point predictlPosBolaDepoisNCiclos(FieldObject o, int nCiclos){
-            Point result;
-            Point p      = new Point(o.position.getPosicao());            
+        public static Ponto predictlPosBolaDepoisNCiclos(Objetos o, int nCiclos){
+            Ponto result;
+            Ponto p      = new Ponto(o.posicao.getPosicao());            
 
             double dDist = getSumGeomSeries(o.velocity().magnitude(), Configuracoes.BOLA_PARAMS.BALL_DECAY, nCiclos);
-            Vector2D vet = new Vector2D();
+            Vetor2D vet = new Vetor2D();
             
             vet.setCoordPolar(o.velocity().direction(), dDist);
-            vet.mais(p.asVector());
+            vet.mais(p.umVetor());
             result = vet.asPoint();    
             
             return result;
         }
         
-        public static Posicao predictAgentePosDepoisNCiclos(FieldObject o, double dashPower, int nCiclos, int time, SenseInfo info){
+        public static Posicao predictAgentePosDepoisNCiclos(Objetos o, double dashPower, int nCiclos, int time, InfoCorpo info){
             Posicao resultPos  = new Posicao();
-            SenseInfo stamina           = info;
+            InfoCorpo stamina           = info;
             double dir                  = o.direction.getDirection();
-            Point p                     = new Point(o.position.getPosicao());
+            Ponto p                     = new Ponto(o.posicao.getPosicao());
             VetorVelocidade vel          = new VetorVelocidade(o.velocity());
             
             for (int i = 0; i < nCiclos; i++) {
@@ -495,18 +495,18 @@ public final class Futil {
             return confianca > 0.85;
         }
         
-        public static FieldObject maisProximoDoObjeto(List<Jogador> objetos, FieldObject objeto){
+        public static Objetos maisProximoDoObjeto(List<Jogador> objetos, Objetos objeto){
             Jogador maisProximo      = null;
             double menorDistancia   = 1000d;
-            Point p;
+            Ponto p;
                         
             for (Jogador player : objetos) {
                 if(!player.equals(objeto)){
-                    p = player.position.getPosicao();
-                    p.menos(objeto.position.getPosicao());
-                    if(p.asVector().magnitude() < menorDistancia){
+                    p = player.posicao.getPosicao();
+                    p.menos(objeto.posicao.getPosicao());
+                    if(p.umVetor().magnitude() < menorDistancia){
                         maisProximo = player;
-                        menorDistancia = p.asVector().magnitude();
+                        menorDistancia = p.umVetor().magnitude();
                     }
                 }
             }
@@ -514,16 +514,16 @@ public final class Futil {
             return maisProximo;
         }
         
-        public static boolean souOMaisProximoDoObjeto(List<Jogador> objetos, FieldObject objeto, double distancia){
+        public static boolean souOMaisProximoDoObjeto(List<Jogador> objetos, Objetos objeto, double distancia){
             double menorDistancia   = distancia;
-            Point p;
+            Ponto p;
                         
             for (Jogador player : objetos) {
                 if(!player.equals(objeto)){
-                    p = new Point(player.position.getPosicao());
-                    p.menos(objeto.position.getPosicao());
-                    if(p.asVector().magnitude() < menorDistancia)                        
-                        menorDistancia = p.asVector().magnitude();
+                    p = new Ponto(player.posicao.getPosicao());
+                    p.menos(objeto.posicao.getPosicao());
+                    if(p.umVetor().magnitude() < menorDistancia)                        
+                        menorDistancia = p.umVetor().magnitude();
                     
                 }
             }
@@ -531,12 +531,12 @@ public final class Futil {
             return menorDistancia == distancia;
         }
         
-        public static FieldObject maisRapidoAteObjeto( List<Jogador> todosPlayerNaVista, FieldObject bola ){
+        public static Objetos maisRapidoAteObjeto( List<Jogador> todosPlayerNaVista, Objetos bola ){
             return null;
         }
         
-        public static boolean isNossaPosseDeBola( List<Jogador> todosPlayerNaVista, FieldObject bola, String time ){
-            FieldObject maisRapido = maisProximoDoObjeto(todosPlayerNaVista, bola);
+        public static boolean isNossaPosseDeBola( List<Jogador> todosPlayerNaVista, Objetos bola, String time ){
+            Objetos maisRapido = maisProximoDoObjeto(todosPlayerNaVista, bola);
             
             return (maisRapido != null) ? 
                     maisRapido.id.startsWith("(p \"") && (maisRapido.id.startsWith(time, 4))
@@ -544,19 +544,19 @@ public final class Futil {
                     false;
         }
         
-        public static Point predictPosDeOutroJogador(Jogador player, int ciclos){
+        public static Ponto predictPosDeOutroJogador(Jogador player, int ciclos){
             double dDirection  = player.velocity().direction();
-            Point pontoPlayer  = new Point(player.position.getPosicao());
+            Ponto pontoPlayer  = new Ponto(player.posicao.getPosicao());
             VetorVelocidade vel = new VetorVelocidade(player.velocity());
             
             for( int i = 0; i < ciclos ; i ++ ){
                 double dAcc     = vel.magnitude();
                 if( dAcc > 0 ){
-                    Vector2D aux = new Vector2D();
+                    Vetor2D aux = new Vetor2D();
                     aux.setCoordPolar(Math.toRadians(dDirection), dAcc);
                     vel.mais(aux);
                 }else{
-                    Vector2D aux = new Vector2D();
+                    Vetor2D aux = new Vetor2D();
                     aux.setCoordPolar(Math.toRadians(simplifyAngle(dDirection + 180)), Math.abs(dAcc));
                     vel.mais(aux);
                 }
@@ -575,18 +575,18 @@ public final class Futil {
         }
         
         
-        public static void predictEstadoDepoisDoDash(Point p, Vector2D vel, double dashPower, int time, SenseInfo info, double dir){
+        public static void predictEstadoDepoisDoDash(Ponto p, Vetor2D vel, double dashPower, int time, InfoCorpo info, double dir){
             double effort   = info.effort;
             double dAcc     = dashPower * Configuracoes.DASH_POWER_RATE * effort;            
-            Vector2D pos    = p.asVector();          
+            Vetor2D pos    = p.umVetor();          
             
             
             if( dAcc > 0 ){
-                Vector2D aux = new Vector2D();
+                Vetor2D aux = new Vetor2D();
                 aux.setCoordPolar(Math.toRadians(dir), dAcc);
                 vel.mais(aux);
             }else{
-                Vector2D aux = new Vector2D();
+                Vetor2D aux = new Vetor2D();
                 aux.setCoordPolar(Math.toRadians(simplifyAngle(dir + 180)), Math.abs(dAcc));
                 vel.mais(aux);
             }
@@ -603,16 +603,16 @@ public final class Futil {
             vel.vezesEscalar(Configuracoes.JOGADOR_PARAMS.PLAYER_DECAY);            
         }
         
-        public static double getXImpedimento( List<Jogador> jogadoresInimigos, FieldObject bola ){            
+        public static double getXImpedimento( List<Jogador> jogadoresInimigos, Objetos bola ){            
             double maiorX   = 0;
                         
             for (Jogador player : jogadoresInimigos) {                
-                if(player.position.getPosicao().getX() > maiorX && !player.id.contains("goalie")){
-                    maiorX = player.position.getPosicao().getX();
+                if(player.posicao.getPosicao().getX() > maiorX && !player.id.contains("goalie")){
+                    maiorX = player.posicao.getPosicao().getX();
                 }                
             }
             
-            double x    = bola.position.getX();
+            double x    = bola.posicao.getX();
             x           = Math.max(x, maiorX);
             
             return x;
@@ -647,7 +647,7 @@ public final class Futil {
         }
         
         
-        public static void predictStaminaDepoisDoDash(double dashPower, SenseInfo info){
+        public static void predictStaminaDepoisDoDash(double dashPower, InfoCorpo info){
             double stamina  = info.stamina;
             double effort   = info.effort;
             
@@ -674,26 +674,26 @@ public final class Futil {
              info.stamina = stamina;            
         }
         
-        public static Point predictPosFinalAgente( Point pos, Vector2D vel ){
-            Point posAgente = pos;
-            Vector2D velAgn = vel;
+        public static Ponto predictPosFinalAgente( Ponto pos, Vetor2D vel ){
+            Ponto posAgente = pos;
+            Vetor2D velAgn = vel;
             
             double dist     = getSumInfGeomSeries(velAgn.magnitude(), Configuracoes.JOGADOR_PARAMS.PLAYER_DECAY);
-            Vector2D vetAux = new Vector2D();
+            Vetor2D vetAux = new Vetor2D();
             vetAux.setCoordPolar(vel.direction(), dist);
             posAgente.mais(vetAux.asPoint());
             
             return posAgente;
         }
         
-        public static double[] predictEstadoAfterTurn(double dSendAngle, Point pos, Vector2D vel, double angBody, double angNeck, SenseInfo sta){
+        public static double[] predictEstadoAfterTurn(double dSendAngle, Ponto pos, Vetor2D vel, double angBody, double angNeck, InfoCorpo sta){
             double dEffectiveAngle;
             dEffectiveAngle = getAtualTurnAngulo(dSendAngle, vel.magnitude() );
             
-            angBody = Futil.simplifyAngle(angBody + dEffectiveAngle );
-            angNeck = Futil.simplifyAngle(angNeck + dEffectiveAngle );
+            angBody = Util.simplifyAngle(angBody + dEffectiveAngle );
+            angNeck = Util.simplifyAngle(angNeck + dEffectiveAngle );
             
-            predictEstadoDepoisDoDash(pos, vel, 0, sta.time, sta, angBody);
+            predictEstadoDepoisDoDash(pos, vel, 0, sta.ciclo, sta, angBody);
             
             double[] result = new double[2];
             result[0] = angBody;
@@ -770,8 +770,8 @@ public final class Futil {
             return ( Math.toDegrees(Math.asin( x ) ) );
         }
         
-        public static Vector2D somaVetores(Vector2D vet1, Vector2D vet2){
-            Vector2D result = new Vector2D();
+        public static Vetor2D somaVetores(Vetor2D vet1, Vetor2D vet2){
+            Vetor2D result = new Vetor2D();
             result.setX(vet1.getX() + vet2.getX());
             result.setY(vet1.getY() + vet2.getY());
             return result;
@@ -799,13 +799,13 @@ public final class Futil {
                 || playMode.equals("free_kick_fault_" + lado));
         }
         
-        public static void predictInfoBolaDepoisComando(String comando, Vector2D pos, VetorVelocidade vel, double power, double angulo, double anguloGlobal, double kickRate){
-            Vector2D posBola        = pos;
+        public static void predictInfoBolaDepoisComando(String comando, Vetor2D pos, VetorVelocidade vel, double power, double angulo, double anguloGlobal, double kickRate){
+            Vetor2D posBola        = pos;
             VetorVelocidade velBola  = vel;
             
             if(comando.equals("kick")){
-                double ang      = Futil.simplifyAngle(angulo + anguloGlobal); // graus
-                Vector2D nAux   = new Vector2D();
+                double ang      = Util.simplifyAngle(angulo + anguloGlobal); // graus
+                Vetor2D nAux   = new Vetor2D();
                 nAux.setCoordPolar(Math.toRadians(ang), kickRate * power);
                 velBola.mais(nAux);
                 

@@ -1,18 +1,9 @@
-/** @file ServerParams_Ball.java
- * Encapsulates all server parameter constants related to the ball object
- * in a way that allows redefinition in the future through object
- * initialization.
- * 
- * @author Team F(utility)
+
+/** @class ConfiguraçõesBola
+ * Classe que guarda as informações/parâmetros relacionados à bola no contexto da simulação.  
+ * Permite editar parametros.
  */
-
-
-
-/** @class ServerParams_Ball
- * Encapsulates constant parameters related to the ball. Allows for
- * redefinition through server parameter messages. 
- */
-public class ServerParams_Ball {
+public class ConfiguracoesBola {
     public final double BALL_SIZE;
     public final double BALL_DECAY;
     public final double BALL_RAND;
@@ -21,11 +12,8 @@ public class ServerParams_Ball {
     public final double BALL_ACCEL_MAX;
     public final double BALL_STUCK_AREA;
     
-    /**
-     * Default Constructor; builds a Params_Ball data stamp based on the values
-     *  in the Builder subclass.
-     */
-    public ServerParams_Ball()
+    
+    public ConfiguracoesBola()
     {
     	BALL_SIZE       = Builder.BALL_SIZE;
     	BALL_DECAY      = Builder.BALL_DECAY;
@@ -97,15 +85,15 @@ public class ServerParams_Ball {
 			}
 			catch ( NullPointerException ne )
 			{
-				Log.e("No server parameter specified");
+				System.out.println("No server parameter specified");
 			}
 			catch ( ArrayIndexOutOfBoundsException ae )
 			{
-				Log.e("Malformed server parameter; no value specified");
+				System.out.println("Malformed server parameter; no value specified");
 			}
 			catch ( NumberFormatException nfe )
 			{
-				Log.d("Server parameter NaN.");
+				System.out.println("Server parameter NaN.");
 			}
 		}
 		

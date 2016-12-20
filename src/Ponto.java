@@ -1,10 +1,3 @@
-/** @file Point.java
- * Representation of an absolute-coordinate point on a 2D plane.
- * 
- * @author Team F(utility)
- */
-
-
 /**
  * Representação de classe de um ponto em um plano 2D, com funções auxiliares para
  encontrar distância e ângulos entre objetos de Ponto.
@@ -27,10 +20,10 @@ public class Ponto {
     }
 
     /**
-     * Constructor, builds a Point object based on the provided coordinates.
+     * Construtor, constrói um objeto Ponto baseado nas coordenadas fornecidas
      * 
-     * @param x the x-coordinate
-     * @param y the y-coordinate
+     * @param x a cordenada x
+     * @param y a cordenada y
      */
     public Ponto(double x, double y) {
         this.x = x;
@@ -45,7 +38,7 @@ public class Ponto {
      * 
      * @return a Ponto with NaN values.
      */
-    public final static Ponto Unknown() {
+    public final static Ponto Desconhecido() {
         return new Ponto(Double.NaN, Double.NaN);
     }
     
@@ -53,12 +46,12 @@ public class Ponto {
      * Gets the angle between this Ponto and another Ponto object.
      * Uses the formula \f$angle = \arctan\left(\frac{y_2-y_1}{x_2-x_1}\right)\f$.
      * 
-     * @param otherPoint the Ponto object to consider
+     * @param outroPonto the Ponto object to consider
      * @return the angle between this Ponto and otherPoint
      */
-    public final double absoluteAngleTo(Ponto otherPoint) {
-        double dx = this.deltaX(otherPoint);
-        double dy = this.deltaY(otherPoint);
+    public final double anguloAbsolutoAoPonto(Ponto outroPonto) {
+        double dx = this.deltaX(outroPonto);
+        double dy = this.deltaY(outroPonto);
         // Handle Math.atan() failure case
         if (dx == 0.0) {
             if (dy >= 0.0) {
@@ -82,53 +75,43 @@ public class Ponto {
      * 
      * @return a 2D vector representing the point
      */
-    public final Vector2D asVector() {
-        return new Vector2D(this.x, this.y);
+    public final Vetor2D umVetor() {
+        return new Vetor2D(this.x, this.y);
     }
-    
-    /**
-     * Returns true if either of this point's x and y are unknown.
-     * 
-     * @return true if either of this point's x and y are unknown
-     */
-    public final boolean isUnknown() {
+   
+    public final boolean ehDesconhecido() {
         return Double.isNaN(this.x) || Double.isNaN(this.y);
     }
     
-    /**
-     * Sets this Ponto's coordinates to the specified coordinates.
-     * 
-     * @param x the x-coordinate
-     * @param y the y-coordinate
-     */
+    
     public void atualizar(double x, double y) {
         this.x = x;
         this.y = y;
     }
     
     /**
-     * Copies the specified Ponto's coordinates to this Ponto.
+     * Copia as coordenadas do Ponto especificadas para este Ponto.
      * 
-     * @param point the Ponto object to copy coordinates from.
+     * @param ponto copia as cordenadas para este ponto.
      */
-    public void update(Ponto point) {
-        this.x = point.getX();
-        this.y = point.getY();
+    public void atualizar(Ponto ponto) {
+        this.x = ponto.getX();
+        this.y = ponto.getY();
     }
     
     /**
-     * Gets the x-coordinate.
+     * Obtem a x-cordenada.
      * 
-     * @return the x-coordinate
+     * @return A cordenada X
      */
     public double getX() {
         return this.x;
     }
 
     /**
-     * Gets the y-coordinate.
+     * Obtem a cordenada Y
      * 
-     * @return the y-coordinate
+     * @return A cordenada Y
      */
     public double getY() {
         return this.y;
@@ -143,62 +126,57 @@ public class Ponto {
     }
     
     /**
-     * Determines if this Ponto is equivalent to a specified Ponto object.
+     * Determina se este Ponto é equivalente a um objeto Ponto especificado.
      * 
-     * @param otherPoint the Ponto to compare this Ponto to.
-     * @return true if the two Points have the same coordinates, otherwise false.
+     * @param outroPonto Ponto para ser comparado.
+     * @return true caso as duas coordenadas forem iguais, caso contrário false.
      */
-    public boolean isEqual(Ponto otherPoint) {
-        return this.getX() == otherPoint.getX() && this.getY() == otherPoint.getY();
+    public boolean ehIgual(Ponto outroPonto) {
+        return this.getX() == outroPonto.getX() && this.getY() == outroPonto.getY();
     }
     
     /**
-     * Retrieves the difference in x-coordinates between this Ponto and
- another Ponto object. The formula used is \f$\Delta x = x_2 - x_1\f$.
+     * Recupera a diferença de coordenadas x entre este Ponto e
+     * Outro objeto Ponto. 
      * 
-     * @param otherPoint the Ponto object to compute against
-     * @return Difference in x-coordinates
+     * @param otherPoint o ponto a ser calculado a diferença
+     * @return Diferença entre as cordenadas X
      */
-    public double deltaX(Ponto otherPoint) {
-        return otherPoint.getX() - this.getX();
+    public double deltaX(Ponto outroPonto) {
+        return outroPonto.getX() - this.getX();
     }
     
     /**
-     * Retrieves the difference in x-coordinates between this Ponto and
- another Ponto object. The formula used is \f$\Delta y = y_2 - y_1\f$.
-     * 
-     * @param otherPoint the Ponto object to compute against
-     * @return Difference in x-coordinates
+     * @param outroPonto O objeto Ponto para calcular contra
+     * @return Difetença entre a cordenada Y
      */
-    public double deltaY(Ponto otherPoint) {
-        return otherPoint.getY() - this.getY();
+    public double deltaY(Ponto outroPonto) {
+        return outroPonto.getY() - this.getY();
     }
     
     /**
      * Retrieves the distance between this Ponto and another Ponto object.
      * The formula used is \f$dist = \sqrt{(\Delta x)^2 + (\Delta y)^2}\f$.
      * 
-     * @param otherPoint the Ponto object to compute against
-     * @return Distance between Ponto objects
+     * @param outroPonto O objeto Ponto para calcular contra
+     * @return Distância entre os objetos Ponto
      */
-    public double distanceTo(Ponto otherPoint) {
-        return Math.hypot(this.deltaX(otherPoint), this.deltaY(otherPoint));
+    public double distanciaAoPonto(Ponto outroPonto) {
+        return Math.hypot(this.deltaX(outroPonto), this.deltaY(outroPonto));
     }
     
     /**
-     * Returns the midpoint between this point and another.
+     * Retorna o ponto médio.
      * 
-     * @param p the other point
-     * @return the midpoint between this point and the other
+     * @param p o outro ponto
+     * @return O ponto médio entre este ponto e o outro
      */
-    public final Ponto midpointTo(Ponto p) {
+    public final Ponto pontoMedio(Ponto p) {
         return new Ponto( (this.x + p.getX()) / 2.0, (this.y + p.getY()) / 2.0);
     }
     
-    /**
-     * Builds a formatted textual representation of this Ponto object.
-     * 
-     * @return a formatted string representation
+    /** 
+     * @return a string formatada
      */
     public String render() {
         return String.format("(%f, %f)", this.x, this.y);

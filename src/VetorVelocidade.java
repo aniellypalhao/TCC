@@ -9,7 +9,7 @@
 /**
  * Velocity vector class.
  */
-public class VetorVelocidade extends Vector2D {
+public class VetorVelocidade extends Vetor2D {
 
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS
@@ -30,7 +30,7 @@ public class VetorVelocidade extends Vector2D {
         super(magnitude);
     }
     
-    public VetorVelocidade(Vector2D vec) {
+    public VetorVelocidade(Vetor2D vec) {
         super(vec);
     }
     

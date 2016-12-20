@@ -1,16 +1,8 @@
-
-/**
- * @file ServerParams_Player.java Encapsulates all server parameter constants
- * related to player objects in a way that allows redefinition in the future
- * through object initialization.
- *
- * @author Team F(utility)
+/** @class ConfiguraçõesBola
+ * Classe que guarda as informações/parâmetros relacionados ao jogador no contexto da simulação.  
+ * Permite editar parametros.
  */
-/**
- * @class ServerParams_Player Encapsulates constant parameters related to the
- * player. Allows for redefinition through server parameter messages.
- */
-public class ServerParams_Player {
+public class ConfiguracoesJogador {
 
     // Player speed
     public final double PLAYER_ACCEL_MAX;
@@ -72,7 +64,7 @@ public class ServerParams_Player {
      * Default Constructor; builds a Params_Ball data stamp based on the values
      * in the Builder subclass.
      */
-    public ServerParams_Player() {
+    public ConfiguracoesJogador() {
         PLAYER_ACCEL_MAX = Builder.PLAYER_ACCEL_MAX;
         PLAYER_SPEED_MAX = Builder.PLAYER_SPEED_MAX;
         PLAYER_SPEED_MAX_DELTA_MIN = Builder.PLAYER_SPEED_MAX_DELTA_MIN;
@@ -226,11 +218,11 @@ public class ServerParams_Player {
                     set_kickable_margin(val);
                 }
             } catch (NullPointerException ne) {
-                Log.e("No server parameter specified");
+                System.out.println("No server parameter specified");
             } catch (ArrayIndexOutOfBoundsException ae) {
-                Log.e("Malformed server parameter; no value specified");
+                System.out.println("Malformed server parameter; no value specified");
             } catch (NumberFormatException nfe) {
-                Log.d("Server parameter NaN.");
+                System.out.println("Server parameter NaN.");
             }
         }
 

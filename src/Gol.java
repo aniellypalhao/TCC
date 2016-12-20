@@ -1,30 +1,22 @@
-/** @file Goal.java
- * Representation of a goal.
- *
- * @author Team F(utility)
- */
-
-
-
 /**
- * Extension of StationaryObject that represents an object on the visible playing field.
+ * Classe Gol que extende ObjetoFixo para representar um Gol
  */
-public class Goal extends StationaryObject {
+public class Gol extends ObjetoFixo {
     
     /**
-     * Goal constructor. Automatically assigns the correct position.
+     * Goal constructor. Automatically assigns the correct posicao.
      * 
      * @param id the ObjectId of the goal
      */
-    public Goal(String id) {
+    public Gol(String id) {
         this.id = id;
-        this.position = this.setPosition();
+        this.posicao = this.setPosition();
     }
 
     /**
-     * Returns the position of a goal, using it's ObjectId.
+     * Returns the posicao of a goal, using it's ObjectId.
      * 
-     * @return the goal's position
+     * @return the goal's posicao
      */
     protected Posicao setPosition() {
     	//A switch{} would be better, but not sure if we will have JRE 1.7 available

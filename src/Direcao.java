@@ -2,6 +2,7 @@
  * Uma estimativa de uma direção, com confiança.
  */
 public class Direcao extends Estimativa {
+    
     private double direcao;
 
     public Direcao() {

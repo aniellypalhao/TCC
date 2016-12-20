@@ -1,15 +1,7 @@
-/** @file SeeInfo.java
- * Represents the information encoded in a `see` message.
- * 
- * @author Team F(utility)
- */ 
-
-
-
 /**
- * Encapsulates the data received in a `see` message.
+ * guarda as informações recebidas do servidor em mensagens do tipo see.
  */
-public class SeeInfo extends Info{
+public class InfoVisao extends Info{
     
     double distance;
     double direction;
@@ -24,7 +16,7 @@ public class SeeInfo extends Info{
     /**
      * Primary constructor.
      */
-    public SeeInfo() {
+    public InfoVisao() {
     	super();
     }
     
@@ -50,8 +42,8 @@ public class SeeInfo extends Info{
      * 
      * @param info to copy
      */
-    public void copy(SeeInfo info){
-    	info.time = time;
+    public void copy(InfoVisao info){
+    	info.ciclo = ciclo;
     	info.distance = distance;
     	info.direction = direction;
     	info.distChange = distChange;

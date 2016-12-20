@@ -37,8 +37,8 @@ public class Configuracoes {
     public static final char RIGHT_SIDE = 'r';
     
     // Parametros do servidor    
-    public static ServerParams_Ball   BOLA_PARAMS           = new ServerParams_Ball();
-    public static ServerParams_Player JOGADOR_PARAMS         = new ServerParams_Player();
+    public static ConfiguracoesBola   BOLA_PARAMS           = new ConfiguracoesBola();
+    public static ConfiguracoesJogador JOGADOR_PARAMS         = new ConfiguracoesJogador();
     public static double              DASH_POWER_RATE       = 0.006;
     public static final double        EFFORT_DEC            = 0.05;
     public static final double        PLAYER_ACCEL_MAX      = 1.0;
@@ -50,7 +50,7 @@ public class Configuracoes {
     public static final double DISTANCE_ESTIMATE = 0.333333 * TEAM_FAR_LENGTH + 0.666666 * TEAM_TOO_FAR_LENGTH;
 
     // Cordenadas
-    public static final Point CENTRO_CAMPO = new Point(0, 0);
+    public static final Ponto CENTRO_CAMPO = new Ponto(0, 0);
     
     /**
      * Constante strings representando os comandos que um cliente pode enviar
@@ -117,24 +117,24 @@ public class Configuracoes {
 	 */
     public static void reconstruirParametros()
     {
-    	BOLA_PARAMS = new ServerParams_Ball();
-    	JOGADOR_PARAMS = new ServerParams_Player();
+    	BOLA_PARAMS = new ConfiguracoesBola();
+    	JOGADOR_PARAMS = new ConfiguracoesJogador();
     }
 	
 	// area campo jogavel
-    public static Rectangle CAMPO = new Rectangle(-ALTURA_CAMPO / 2.0, LARGURA_CAMPO / 2.0, ALTURA_CAMPO / 2.0, -LARGURA_CAMPO / 2.0);
-    public static Rectangle CAMPO_L = new Rectangle(-ALTURA_CAMPO / 2.0, 0, ALTURA_CAMPO / 2.0, -LARGURA_CAMPO / 2.0);
-    public static Rectangle CAMPO_R = new Rectangle(-ALTURA_CAMPO / 2.0, LARGURA_CAMPO / 2.0, ALTURA_CAMPO / 2.0, 0);
+    public static Retangulo CAMPO = new Retangulo(-ALTURA_CAMPO / 2.0, LARGURA_CAMPO / 2.0, ALTURA_CAMPO / 2.0, -LARGURA_CAMPO / 2.0);
+    public static Retangulo CAMPO_L = new Retangulo(-ALTURA_CAMPO / 2.0, 0, ALTURA_CAMPO / 2.0, -LARGURA_CAMPO / 2.0);
+    public static Retangulo CAMPO_R = new Retangulo(-ALTURA_CAMPO / 2.0, LARGURA_CAMPO / 2.0, ALTURA_CAMPO / 2.0, 0);
     
     
-    public static Rectangle PEQUENA_AREA_L = new Rectangle(-ALTURA_PEQUENA_AREA / 2.0, -(LARGURA_CAMPO / 2.0) + COMPRIMENTO_PEQUENA_AREA, ALTURA_PEQUENA_AREA / 2.0 ,-(LARGURA_CAMPO / 2.0) + 1);
-    public static Rectangle PEQUENA_AREA_R = new Rectangle(-ALTURA_PEQUENA_AREA / 2.0, (LARGURA_CAMPO / 2.0) - 1 , ALTURA_PEQUENA_AREA / 2.0 ,(LARGURA_CAMPO / 2.0) - COMPRIMENTO_PEQUENA_AREA);
+    public static Retangulo PEQUENA_AREA_L = new Retangulo(-ALTURA_PEQUENA_AREA / 2.0, -(LARGURA_CAMPO / 2.0) + COMPRIMENTO_PEQUENA_AREA, ALTURA_PEQUENA_AREA / 2.0 ,-(LARGURA_CAMPO / 2.0) + 1);
+    public static Retangulo PEQUENA_AREA_R = new Retangulo(-ALTURA_PEQUENA_AREA / 2.0, (LARGURA_CAMPO / 2.0) - 1 , ALTURA_PEQUENA_AREA / 2.0 ,(LARGURA_CAMPO / 2.0) - COMPRIMENTO_PEQUENA_AREA);
     // Limite físico absoluto do espaço de jogo
-    public static Rectangle BORDA_EXTERNA = new Rectangle(CAMPO.getTop() - BUFFER_CAMPO, CAMPO.getRight() + BUFFER_CAMPO, CAMPO.getBottom() + BUFFER_CAMPO, CAMPO.getLeft() - BUFFER_CAMPO);
+    public static Retangulo BORDA_EXTERNA = new Retangulo(CAMPO.getSuperior() - BUFFER_CAMPO, CAMPO.getDireita() + BUFFER_CAMPO, CAMPO.getInferior() + BUFFER_CAMPO, CAMPO.getEsquerda() - BUFFER_CAMPO);
     
     // area de penalti
-    public static Rectangle AREA_PENALTI_ESQUERDA = new Rectangle(-ALTURA_AREA_PENALTI / 2.0, CAMPO.getLeft() + LARGURA_AREA_PENALTI, ALTURA_AREA_PENALTI / 2.0, CAMPO.getLeft());
-    public static Rectangle AREA_PENALTI_DIREITA = new Rectangle(-ALTURA_AREA_PENALTI / 2.0, CAMPO.getRight(), ALTURA_AREA_PENALTI / 2.0, CAMPO.getRight() - LARGURA_AREA_PENALTI);
+    public static Retangulo AREA_PENALTI_ESQUERDA = new Retangulo(-ALTURA_AREA_PENALTI / 2.0, CAMPO.getEsquerda() + LARGURA_AREA_PENALTI, ALTURA_AREA_PENALTI / 2.0, CAMPO.getEsquerda());
+    public static Retangulo AREA_PENALTI_DIREITA = new Retangulo(-ALTURA_AREA_PENALTI / 2.0, CAMPO.getDireita(), ALTURA_AREA_PENALTI / 2.0, CAMPO.getDireita() - LARGURA_AREA_PENALTI);
     
  
     
@@ -222,72 +222,72 @@ public class Configuracoes {
      * probably more efficient to parse and store them in advance. They are
      * stationary, after all.
      */
-    public static final StationaryObject[] OBJETOS_FIXOS = {
+    public static final ObjetoFixo[] OBJETOS_FIXOS = {
         // Physical boundary flags
-        new StationaryObject("(f t l 50)", -50.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t l 40)", -40.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t l 30)", -30.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t l 20)", -20.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t l 10)", -10.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t 0)", 0.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t r 10)", 10.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t r 20)", 20.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t r 30)", 30.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t r 40)", 40.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f t r 50)", 50.0, BORDA_EXTERNA.getTop()),
-        new StationaryObject("(f r t 30)", BORDA_EXTERNA.getRight(), -30.0),
-        new StationaryObject("(f r t 20)", BORDA_EXTERNA.getRight(), -20.0),
-        new StationaryObject("(f r t 10)", BORDA_EXTERNA.getRight(), -10.0),
-        new StationaryObject("(f r 0)", BORDA_EXTERNA.getRight(), 0.0),
-        new StationaryObject("(f r b 10)", BORDA_EXTERNA.getRight(), 10.0),
-        new StationaryObject("(f r b 20)", BORDA_EXTERNA.getRight(), 20.0),
-        new StationaryObject("(f r b 30)", BORDA_EXTERNA.getRight(), 30.0),
-        new StationaryObject("(f b r 50)", 50.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b r 40)", 40.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b r 30)", 30.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b r 20)", 20.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b r 10)", 10.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b 0)", 0.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b l 10)", -10.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b l 20)", -20.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b l 30)", -30.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b l 40)", -40.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f b l 50)", -50.0, BORDA_EXTERNA.getBottom()),
-        new StationaryObject("(f l b 30)", BORDA_EXTERNA.getLeft(), 30.0),
-        new StationaryObject("(f l b 20)", BORDA_EXTERNA.getLeft(), 20.0),
-        new StationaryObject("(f l b 10)", BORDA_EXTERNA.getLeft(), 10.0),
-        new StationaryObject("(f l 0)", BORDA_EXTERNA.getLeft(), 0.0),
-        new StationaryObject("(f l t 10)", BORDA_EXTERNA.getLeft(), 10.0),
-        new StationaryObject("(f l t 20)", BORDA_EXTERNA.getLeft(), 20.0),
-        new StationaryObject("(f l t 30)", BORDA_EXTERNA.getLeft(), 30.0),
+        new ObjetoFixo("(f t l 50)", -50.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t l 40)", -40.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t l 30)", -30.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t l 20)", -20.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t l 10)", -10.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t 0)", 0.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t r 10)", 10.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t r 20)", 20.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t r 30)", 30.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t r 40)", 40.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f t r 50)", 50.0, BORDA_EXTERNA.getSuperior()),
+        new ObjetoFixo("(f r t 30)", BORDA_EXTERNA.getDireita(), -30.0),
+        new ObjetoFixo("(f r t 20)", BORDA_EXTERNA.getDireita(), -20.0),
+        new ObjetoFixo("(f r t 10)", BORDA_EXTERNA.getDireita(), -10.0),
+        new ObjetoFixo("(f r 0)", BORDA_EXTERNA.getDireita(), 0.0),
+        new ObjetoFixo("(f r b 10)", BORDA_EXTERNA.getDireita(), 10.0),
+        new ObjetoFixo("(f r b 20)", BORDA_EXTERNA.getDireita(), 20.0),
+        new ObjetoFixo("(f r b 30)", BORDA_EXTERNA.getDireita(), 30.0),
+        new ObjetoFixo("(f b r 50)", 50.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b r 40)", 40.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b r 30)", 30.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b r 20)", 20.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b r 10)", 10.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b 0)", 0.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b l 10)", -10.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b l 20)", -20.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b l 30)", -30.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b l 40)", -40.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f b l 50)", -50.0, BORDA_EXTERNA.getInferior()),
+        new ObjetoFixo("(f l b 30)", BORDA_EXTERNA.getEsquerda(), 30.0),
+        new ObjetoFixo("(f l b 20)", BORDA_EXTERNA.getEsquerda(), 20.0),
+        new ObjetoFixo("(f l b 10)", BORDA_EXTERNA.getEsquerda(), 10.0),
+        new ObjetoFixo("(f l 0)", BORDA_EXTERNA.getEsquerda(), 0.0),
+        new ObjetoFixo("(f l t 10)", BORDA_EXTERNA.getEsquerda(), 10.0),
+        new ObjetoFixo("(f l t 20)", BORDA_EXTERNA.getEsquerda(), 20.0),
+        new ObjetoFixo("(f l t 30)", BORDA_EXTERNA.getEsquerda(), 30.0),
         
         // Field corner flags
-        new StationaryObject("(f l t)", CAMPO.getLeft(), CAMPO.getTop()),
-        new StationaryObject("(f r t)", CAMPO.getRight(), CAMPO.getTop()),
-        new StationaryObject("(f r b)", CAMPO.getRight(), CAMPO.getBottom()),
-        new StationaryObject("(f l b)", CAMPO.getLeft(), CAMPO.getBottom()),
+        new ObjetoFixo("(f l t)", CAMPO.getEsquerda(), CAMPO.getSuperior()),
+        new ObjetoFixo("(f r t)", CAMPO.getDireita(), CAMPO.getSuperior()),
+        new ObjetoFixo("(f r b)", CAMPO.getDireita(), CAMPO.getInferior()),
+        new ObjetoFixo("(f l b)", CAMPO.getEsquerda(), CAMPO.getInferior()),
         
         // Field center flags
-        new StationaryObject("(f c t)", 0.0, CAMPO.getTop()),
-        new StationaryObject("(f c)", 0.0, 0.0),
-        new StationaryObject("(f c b)", 0.0, CAMPO.getBottom()),
+        new ObjetoFixo("(f c t)", 0.0, CAMPO.getSuperior()),
+        new ObjetoFixo("(f c)", 0.0, 0.0),
+        new ObjetoFixo("(f c b)", 0.0, CAMPO.getInferior()),
         
         // Penalty area flags
-        new StationaryObject("(f p l t)", AREA_PENALTI_ESQUERDA.getRight(), AREA_PENALTI_ESQUERDA.getTop()),
-        new StationaryObject("(f p l c)", AREA_PENALTI_ESQUERDA.getRight(), 0.0),
-        new StationaryObject("(f p l b)", AREA_PENALTI_ESQUERDA.getRight(), AREA_PENALTI_ESQUERDA.getBottom()),
-        new StationaryObject("(f p r t)", AREA_PENALTI_DIREITA.getLeft(), AREA_PENALTI_DIREITA.getTop()),
-        new StationaryObject("(f p r c)", AREA_PENALTI_DIREITA.getLeft(), 0.0),
-        new StationaryObject("(f p r b)", AREA_PENALTI_DIREITA.getLeft(), AREA_PENALTI_DIREITA.getBottom()),
+        new ObjetoFixo("(f p l t)", AREA_PENALTI_ESQUERDA.getDireita(), AREA_PENALTI_ESQUERDA.getSuperior()),
+        new ObjetoFixo("(f p l c)", AREA_PENALTI_ESQUERDA.getDireita(), 0.0),
+        new ObjetoFixo("(f p l b)", AREA_PENALTI_ESQUERDA.getDireita(), AREA_PENALTI_ESQUERDA.getInferior()),
+        new ObjetoFixo("(f p r t)", AREA_PENALTI_DIREITA.getEsquerda(), AREA_PENALTI_DIREITA.getSuperior()),
+        new ObjetoFixo("(f p r c)", AREA_PENALTI_DIREITA.getEsquerda(), 0.0),
+        new ObjetoFixo("(f p r b)", AREA_PENALTI_DIREITA.getEsquerda(), AREA_PENALTI_DIREITA.getInferior()),
         
         // Goalpost flags
-        new StationaryObject("(f g l t)", CAMPO.getLeft(), ALTURA_GOL / 2),
-        new StationaryObject("(f g l b)", CAMPO.getLeft(), -ALTURA_GOL / 2),
-        new StationaryObject("(f g r t)", CAMPO.getRight(), ALTURA_GOL / 2),
-        new StationaryObject("(f g r b)", CAMPO.getRight(), -ALTURA_GOL / 2),
+        new ObjetoFixo("(f g l t)", CAMPO.getEsquerda(), ALTURA_GOL / 2),
+        new ObjetoFixo("(f g l b)", CAMPO.getEsquerda(), -ALTURA_GOL / 2),
+        new ObjetoFixo("(f g r t)", CAMPO.getDireita(), ALTURA_GOL / 2),
+        new ObjetoFixo("(f g r b)", CAMPO.getDireita(), -ALTURA_GOL / 2),
         
         // Goals
-        new StationaryObject("(g l)", CAMPO.getLeft(), 0.0),
-        new StationaryObject("(g r)", CAMPO.getRight(), 0.0)
+        new ObjetoFixo("(g l)", CAMPO.getEsquerda(), 0.0),
+        new ObjetoFixo("(g r)", CAMPO.getDireita(), 0.0)
     };
 }

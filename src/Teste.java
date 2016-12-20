@@ -11,31 +11,31 @@
  */
 public class Teste {
     
-    public void turnBodyParaPonto( Point ponto, int ciclos ){
-        Point posGlobal            = new Point(0,0);
-        Vector2D vet               = ponto.asVector();
-        vet.menos(posGlobal.asVector());
+    public void turnBodyParaPonto( Ponto ponto, int ciclos ){
+        Ponto posGlobal            = new Ponto(0,0);
+        Vetor2D vet               = ponto.umVetor();
+        vet.menos(posGlobal.umVetor());
         double angulo              = Math.toDegrees(vet.direction());
         angulo                    -= 0;
-        angulo                     = Futil.simplifyAngle(angulo);
-        //angulo                     = Futil.getAnguloParaTurn(angulo, player.velocity().magnitude());
+        angulo                     = Util.simplifyAngle(angulo);
+        //angulo                     = Util.getAnguloParaTurn(angulo, player.velocity().magnitude());
         System.out.println(angulo);
     }
     
     public void procurarBola(){
         int sinal           = 1;
-        Point posBola       = new Point(1,-1);
-        Point posAgente     = new Point(0,0);
+        Ponto posBola       = new Ponto(1,-1);
+        Ponto posAgente     = new Ponto(0,0);
         posBola.menos(posAgente);
-        double angulo       = Math.toDegrees(posBola.asVector().direction());
+        double angulo       = Math.toDegrees(posBola.umVetor().direction());
         double anguloAgente = 0;
                 
         if(true)
-             sinal = ( Futil.isAnguloNoIntervalo(angulo, anguloAgente,Futil.simplifyAngle(anguloAgente+180) ) ) ? 1 : -1;
+             sinal = ( Util.isAnguloNoIntervalo(angulo, anguloAgente,Util.simplifyAngle(anguloAgente+180) ) ) ? 1 : -1;
         
         //timeUltimoProcuraBola   = time;
-        Vector2D angTurn        = new Vector2D();
-        angTurn.setCoordPolar(Math.toRadians(Futil.simplifyAngle(anguloAgente + 60 * sinal)), 1);
+        Vetor2D angTurn        = new Vetor2D();
+        angTurn.setCoordPolar(Math.toRadians(Util.simplifyAngle(anguloAgente + 60 * sinal)), 1);
                 
         posAgente.mais(angTurn.asPoint());
         System.out.println(sinal);
@@ -67,20 +67,20 @@ public class Teste {
         System.out.println("dirchange = " + dChange + " dirAux = " + daux);
     }
     
-    public Point predictPosDeOutroJogador(Jogador player, int ciclos){
+    public Ponto predictPosDeOutroJogador(Jogador player, int ciclos){
         double dDirection  = 0;
-        Point pontoPlayer  = new Point(0,0);
+        Ponto pontoPlayer  = new Ponto(0,0);
         VetorVelocidade vel = new VetorVelocidade(0,0);
 
         for( int i = 0; i < ciclos ; i ++ ){
             double dAcc     = 100 * Configuracoes.DASH_POWER_RATE;
             if( dAcc > 0 ){
-                Vector2D aux = new Vector2D();
+                Vetor2D aux = new Vetor2D();
                 aux.setCoordPolar(Math.toRadians(dDirection), dAcc);
                 vel.mais(aux);
             }else{
-                Vector2D aux = new Vector2D();
-                aux.setCoordPolar(Math.toRadians(Futil.simplifyAngle(dDirection + 180)), Math.abs(dAcc));
+                Vetor2D aux = new Vetor2D();
+                aux.setCoordPolar(Math.toRadians(Util.simplifyAngle(dDirection + 180)), Math.abs(dAcc));
                 vel.mais(aux);
             }
 
@@ -97,25 +97,25 @@ public class Teste {
         return pontoPlayer;
     }
     
-    public Point getPontoDeIntersecaoBola(){
-        FieldObject bola    = new MobileObject();
-        bola.position.atualizar(15, 0, 1, 1);
+    public Ponto getPontoDeIntersecaoBola(){
+        Objetos bola    = new ObjetoMovel();
+        bola.posicao.atualizar(15, 0, 1, 1);
         bola.velocidade     = new VetorVelocidade();
         bola.velocidade.setCoordPolar(Math.toRadians(-135), 1);
         
-        Point posAgente     = new Point(0,0);
+        Ponto posAgente     = new Ponto(0,0);
         VetorVelocidade vel  = new VetorVelocidade(0,0);//player velocity
         double dSpeed, dDistExtra;
-        Point posMe,posBall = null;
+        Ponto posMe,posBall = null;
         double ang, angBody, angNeck;
-        SenseInfo sta       = new SenseInfo();
+        InfoCorpo sta       = new InfoCorpo();
         sta.effort          = 1;
         double dMaxDist;
         
-        dMaxDist        = Futil.kickable_radius();
+        dMaxDist        = Util.kickable_radius();
         dSpeed          = 0;
-        dDistExtra      = Futil.getSumInfGeomSeries(dSpeed, Configuracoes.JOGADOR_PARAMS.PLAYER_DECAY);
-        Vector2D posAux = new Vector2D();
+        dDistExtra      = Util.getSumInfGeomSeries(dSpeed, Configuracoes.JOGADOR_PARAMS.PLAYER_DECAY);
+        Vetor2D posAux = new Vetor2D();
         posAux.setCoordPolar(vel.direction(), dDistExtra);
         posAgente.mais(posAux.asPoint());
         
@@ -123,30 +123,30 @@ public class Teste {
             vel         = new VetorVelocidade(0,0);//player velocity
             angBody     = 45;
             angNeck     = 45;
-            posBall     = Futil.predictlPosBolaDepoisNCiclos(bola, i+1);
-            posMe       = new Point(0,0);
-            Point aux   = new Point(posBall);
+            posBall     = Util.predictlPosBolaDepoisNCiclos(bola, i+1);
+            posMe       = new Ponto(0,0);
+            Ponto aux   = new Ponto(posBall);
             aux.menos(posAgente);
-            ang         = Math.toDegrees(aux.asVector().direction());
-            ang         = Futil.simplifyAngle(ang - angBody );
+            ang         = Math.toDegrees(aux.umVetor().direction());
+            ang         = Util.simplifyAngle(ang - angBody );
             int turn    = 0;
             
             while(Math.abs(ang) > 7 && turn < 5){
                 turn++;
-                double dirBodyENeck[] = Futil.predictEstadoAfterTurn(Futil.getAnguloParaTurn(ang, vel.magnitude()), posMe, vel, angBody, angNeck, sta);
-                aux         = new Point(posBall);
+                double dirBodyENeck[] = Util.predictEstadoAfterTurn(Util.getAnguloParaTurn(ang, vel.magnitude()), posMe, vel, angBody, angNeck, sta);
+                aux         = new Ponto(posBall);
                 aux.menos(posAgente);
                 angBody     = dirBodyENeck[0];
                 angNeck     = dirBodyENeck[1];
-                ang         = Math.toDegrees(aux.asVector().direction());
-                ang         = Futil.simplifyAngle(ang - angBody);
+                ang         = Math.toDegrees(aux.umVetor().direction());
+                ang         = Util.simplifyAngle(ang - angBody);
             }
             
             for (; turn < i; turn++) {
-                Futil.predictEstadoDepoisDoDash(posMe, vel, Configuracoes.JOGADOR_PARAMS.DASH_POWER_MAX, 1, sta, angBody);
+                Util.predictEstadoDepoisDoDash(posMe, vel, Configuracoes.JOGADOR_PARAMS.DASH_POWER_MAX, 1, sta, angBody);
             }
             
-            if (posMe.distanceTo( posBall ) < dMaxDist || (posMe.distanceTo( posAgente) > posBall.distanceTo( posAgente ) + dMaxDist) ){                
+            if (posMe.distanciaAoPonto( posBall ) < dMaxDist || (posMe.distanciaAoPonto( posAgente) > posBall.distanciaAoPonto( posAgente ) + dMaxDist) ){                
                 return posBall;
             }
             
@@ -159,14 +159,14 @@ public class Teste {
         double angleToTurn  = direction - headDir;
         double relNeck      = 20;
         
-        angleToTurn         = Futil.validarTurNeckAngle(angleToTurn, relNeck);
+        angleToTurn         = Util.validarTurNeckAngle(angleToTurn, relNeck);
         System.out.println(angleToTurn);
     }
     
     public static void main(String[] args) {
         
-         Point posCima = new Point(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, -Configuracoes.ALTURA_CAMPO / 4);
-         Point   posBaixo       = new Point(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, Configuracoes.ALTURA_CAMPO / 4);
+         Ponto posCima = new Ponto(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, -Configuracoes.ALTURA_CAMPO / 4);
+         Ponto   posBaixo       = new Ponto(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, Configuracoes.ALTURA_CAMPO / 4);
     
          System.out.println(posBaixo.render());
          System.out.println(posCima.render());

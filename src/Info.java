@@ -1,18 +1,11 @@
-/** @file Info.java
- * Encapsulation of an object's info at a specific time step.
- * 
- * @author Team F(utility)
- */ 
-
-
 
 /**
- *Encapsulates the data received in a see message 
- *{@link SeeInfo} & {@link SenseInfo} extend this class
+ * Classe pai para as classes infoCorpo e infoVisao, 
+ * que contém os atributos em comum entre as duas infos citadas anteriormente.
  */
 public abstract class Info {
 
-	int time;
+	int ciclo;
 	
 	/**
 	 * This default constructor uses the reset method to initialize member variables.
@@ -25,7 +18,7 @@ public abstract class Info {
 	 * Resets member variables in preparation for being updated.
 	 */
 	public void reset(){
-		this.time = -1;
+		this.ciclo = -1;
 	}
 	
 }

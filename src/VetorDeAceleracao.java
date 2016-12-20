@@ -7,7 +7,7 @@
 /**
  * Model for the acceleration of various `FieldObject`s in a soccer server time step. 
  */
-public class VetorDeAceleracao extends Vector2D {
+public class VetorDeAceleracao extends Vetor2D {
     
     ///////////////////////////////////////////////////////////////////////////
     // CONSTRUCTORS

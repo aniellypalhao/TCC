@@ -34,7 +34,7 @@ public class Cliente {
                     this.player.time.nome = args[i + 1];
                 }
             } catch (Exception e) {
-                Log.e("Invalid command-line parameters.");
+                System.out.println("Invalid command-line parameters.");
             }
         }
     }

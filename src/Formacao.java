@@ -1,9 +1,3 @@
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author Valderlei
@@ -23,7 +17,7 @@ public class Formacao {
     
     public LayoutFormacao[] formacaoEmCurso = Formacao.FORMACAO_INICIAL;
     
-    public Point getPontoEstrategico(int numero, Point posBola, double maxX, boolean isNossaBola, double maxYPorcentagem, LayoutFormacao[] formacao, char side){
+    public Ponto getPontoEstrategico(int numero, Ponto posBola, double maxX, boolean isNossaBola, double maxYPorcentagem, LayoutFormacao[] formacao, char side){
         LayoutFormacao[] aux = formacao;
         
         if(formacaoEmCurso == null){
@@ -38,7 +32,7 @@ public class Formacao {
             System.out.println("formação nula");
         }
                 
-        Point pontoOriginal;
+        Ponto pontoOriginal;
         double x,y;
         
         pontoOriginal = this.posOriginal(numero , side);
@@ -73,18 +67,18 @@ public class Formacao {
         }
         this.setFormacao(aux);
         
-        return new Point(x,y);
+        return new Ponto(x,y);
     }   
     
     public void setFormacao(LayoutFormacao[] f){
         formacaoEmCurso = f;
     }
     
-    public Point posOriginal(int numero, char side){
+    public Ponto posOriginal(int numero, char side){
         if(side == 'l')
-            return new Point(formacaoEmCurso[numero - 1].getX() , formacaoEmCurso[numero - 1].getY());
+            return new Ponto(formacaoEmCurso[numero - 1].getX() , formacaoEmCurso[numero - 1].getY());
         else
-            return new Point(-formacaoEmCurso[numero - 1].getX() , formacaoEmCurso[numero - 1].getY());
+            return new Ponto(-formacaoEmCurso[numero - 1].getX() , formacaoEmCurso[numero - 1].getY());
     }
     
     public boolean isPosicao(POSICAO p, int numero){

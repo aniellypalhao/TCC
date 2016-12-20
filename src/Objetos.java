@@ -1,29 +1,13 @@
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/** @file FieldObject.java
- * Represents a physical object positioned somewhere on the field. Used by the
- * client to model states.
- * 
- * @author Team F(utility)
- */ 
-
-
-
 /**
- * Represents an object on the playing field.
+ * Representa um objeto no campo
  */
-public abstract class FieldObject extends GameObject {
-    public SeeInfo curInfo = new SeeInfo();  // the last see info received about the object
-    public SeeInfo oldInfo = new SeeInfo();
+
+public abstract class Objetos {
+    public InfoVisao curInfo = new InfoVisao();  // the last see info received about the object
+    public InfoVisao oldInfo = new InfoVisao();
     public Direcao direction = new Direcao();
     public Direcao prevDirection = new Direcao();
-    public Posicao position = new Posicao();
+    public Posicao posicao = new Posicao();
     public Posicao prevPosition = new Posicao();
     public VetorVelocidade velocidade = new VetorVelocidade();
     public String id = "UNKNOWN_ID";
@@ -35,7 +19,7 @@ public abstract class FieldObject extends GameObject {
     /**
      * This default constructor initializes the field object with default values.
      */
-    public FieldObject() {
+    public Objetos() {
     }
     
     /**
@@ -44,19 +28,19 @@ public abstract class FieldObject extends GameObject {
      * @param x the x-coordinate
      * @param y the y-coordinate
      */
-    public FieldObject(double x, double y) {
-        this.position.atualizar(x, y, 1.0, -1);
+    public Objetos(double x, double y) {
+        this.posicao.atualizar(x, y, 1.0, -1);
     }
     
     /**
      * Creates the appropriate field object or subclass thereof, given a valid object id.
      * 
      * @param id the object's id
-     * @return the corresponding FieldObject
+     * @return the corresponding Objetos
      */
-    public static final FieldObject create(String id) {
+    public static final Objetos create(String id) {
         if(id.startsWith("(b")){
-            return new Ball();
+            return new Bola();
         }
         else if(id.startsWith("(p")){
             return new Jogador(id);
@@ -73,14 +57,14 @@ public abstract class FieldObject extends GameObject {
         	return new Flag(id);
         }
         else if(id.startsWith("(goal")){
-        	return new Goal(id);
+        	return new Gol(id);
         }
         else if(id.startsWith("(P")){
             //TODO return whatever a P is
             return null;
         }
         else{
-            Log.e("invalid name detected for see parse");
+            System.out.println("invalid name detected for see parse");
             return null;
         }
     }
@@ -92,8 +76,8 @@ public abstract class FieldObject extends GameObject {
      * @param object the given field object to calculate an angle against.
      * @return the angle to the object in degrees
      */
-    public final double absoluteAngleTo(FieldObject object) {
-        return this.position.getPosicao().absoluteAngleTo(object.position.getPosicao());
+    public final double absoluteAngleTo(Objetos object) {
+        return this.posicao.getPosicao().anguloAbsolutoAoPonto(object.posicao.getPosicao());
     }
     
     /**
@@ -104,7 +88,7 @@ public abstract class FieldObject extends GameObject {
      * @return the angle to the object in degrees
      */
     public final double absoluteAngleTo(Ponto p) {
-        return this.position.getPosicao().absoluteAngleTo(p);
+        return this.posicao.getPosicao().anguloAbsolutoAoPonto(p);
     }
     
     /**
@@ -113,9 +97,9 @@ public abstract class FieldObject extends GameObject {
      * @return an offset in degrees from this object's direction to the other
      * object
      */
-    public final double relativeAngleTo(FieldObject object) {
+    public final double relativeAngleTo(Objetos object) {
         double angle = this.absoluteAngleTo(object) - this.direction.getDirection();
-        return Futil.simplifyAngle(angle);
+        return Util.simplifyAngle(angle);
     }
     
     /**
@@ -126,7 +110,7 @@ public abstract class FieldObject extends GameObject {
      */
     public final double relativeAngleTo(Ponto p) {
         double angle = this.absoluteAngleTo(p) - this.direction.getDirection();
-        return Futil.simplifyAngle(angle);
+        return Util.simplifyAngle(angle);
     }
     
     /**
@@ -138,7 +122,7 @@ public abstract class FieldObject extends GameObject {
      * @param object the given field object
      * @return the distance from the this object to the given field object
      */
-    public double distanceTo(FieldObject object) {
+    public double distanceTo(Objetos object) {
         double dx = this.deltaX(object);
         double dy = this.deltaY(object);
         return Math.hypot(dx, dy); 
@@ -151,9 +135,9 @@ public abstract class FieldObject extends GameObject {
      * @return the difference in x coordinates from this object to the given
      * object
      */
-    public double deltaX(FieldObject object) {
-        double x0 = this.position.getPosicao().getX();
-        double x1 = object.position.getPosicao().getX();
+    public double deltaX(Objetos object) {
+        double x0 = this.posicao.getPosicao().getX();
+        double x1 = object.posicao.getPosicao().getX();
         return x1 - x0;
     }
     
@@ -164,14 +148,14 @@ public abstract class FieldObject extends GameObject {
      * @return the difference in y coordinates from this object to the given
      * object
      */
-    public double deltaY(FieldObject object) {
-        double y0 = this.position.getPosicao().getY();
-        double y1 = object.position.getPosicao().getY();
+    public double deltaY(Objetos object) {
+        double y0 = this.posicao.getPosicao().getY();
+        double y1 = object.posicao.getPosicao().getY();
         return y1 - y0;
     }
     
     /**
-     * Returns true if this FieldObject has is a player with a brain associated with it. This
+     * Returns true if this Objetos has is a player with a brain associated with it. This
  method is overridden in the Jogador class.
      */
     public boolean hasBrain() {
@@ -184,7 +168,7 @@ public abstract class FieldObject extends GameObject {
      * @param rectangle a rectangle to check if this object is in
      * @return true if this object is in the rectangle
      */
-    public boolean inRectangle(Rectangle rectangle) {
+    public boolean inRectangle(Retangulo rectangle) {
         return rectangle.contains(this);
     }
     
@@ -205,7 +189,7 @@ public abstract class FieldObject extends GameObject {
      */
     public final double relativeAngleTo(double direction) {
         double angle = direction - this.direction.getDirection();
-        return Futil.simplifyAngle(angle);
+        return Util.simplifyAngle(angle);
     }
     
     /**
@@ -213,14 +197,14 @@ public abstract class FieldObject extends GameObject {
      * 
      * @param player the player whose brain is modeling this object
      * @param info the object's info from the `see` message
-     * @param time the soccer server time from the `see` message
+     * @param time the soccer server ciclo from the `see` message
      */
     public final void update(Jogador player, String info, int time) {
         boolean inferirVelocidade = false;
     	this.curInfo.copy(oldInfo);
         this.curInfo.reset();
-        this.curInfo.time = time;
-        String[] args = Futil.extractArgs(info);
+        this.curInfo.ciclo = time;
+        String[] args = Util.extractArgs(info);
         int offset = 0;  // indicates number of optional parameters read so far
         if (args.length >= 3 && args[args.length - 1].equals("t")) {
             this.curInfo.tackling = true;
@@ -250,28 +234,28 @@ public abstract class FieldObject extends GameObject {
         case 2:
             this.curInfo.direction = Double.valueOf(args[1]);
             this.curInfo.distance = Double.valueOf(args[0]);
-            // Calculate this object's probable position
+            // Calculate this object's probable posicao
             if (!this.isStationaryObject()) {
                 double absDir       = Math.toRadians(player.direction.getDirection() + this.curInfo.direction);
                 double dist         = this.curInfo.distance;
-                double px           = player.position.getX();
-                double py           = player.position.getY();
-                double confidence   = player.position.getConfianca(time);
+                double px           = player.posicao.getX();
+                double py           = player.posicao.getY();
+                double confidence   = player.posicao.getConfianca(time);
                 double x            = px + dist * Math.cos(absDir);
                 double y            = py + dist * Math.sin(absDir);
-                this.position.atualizar(x, y, confidence, time);
+                this.posicao.atualizar(x, y, confidence, time);
             }
             break;   
         case 1:
             this.curInfo.direction = Double.valueOf(args[0]);
             break;
         default:
-            Log.e("Field object had " + args.length + " arguments.");
+            System.out.println("Field object had " + args.length + " arguments.");
         }
         
         //calculate acceleration
-        //TODO if SeeInfo goes to NaN check for it
-        final double dt = curInfo.time - oldInfo.time;
+        //TODO if InfoVisao goes to NaN check for it
+        final double dt = curInfo.ciclo - oldInfo.ciclo;
         final double dv = curInfo.distChange - oldInfo.distChange;
         acceleration = dv/dt;
         if(inferirVelocidade && !isStationaryObject())
@@ -281,8 +265,8 @@ public abstract class FieldObject extends GameObject {
     public void infereVelocidadedoObjeto(Jogador player){
         
             double distance = this.curInfo.distance;
-            double erx      = (this.position.getX() - player.position.getX())/distance;
-            double ery      = (this.position.getY() - player.position.getY())/distance;
+            double erx      = (this.posicao.getX() - player.posicao.getX())/distance;
+            double ery      = (this.posicao.getY() - player.posicao.getY())/distance;
             double dChange  = this.curInfo.dirChange;
             double distChan = this.curInfo.distChange;
             double vyo      = player.velocity().getY();
@@ -298,9 +282,9 @@ public abstract class FieldObject extends GameObject {
     }
     
     /**
-     * Returns the estimated velocity of this FieldObject. Overridden by Jogador class.
+     * Returns the estimated velocity of this Objetos. Overridden by Jogador class.
      * 
-     * @return the estimated velocity of this FieldObject
+     * @return the estimated velocity of this Objetos
      */
     public VetorVelocidade velocity() {
         return velocidade;
@@ -310,7 +294,7 @@ public abstract class FieldObject extends GameObject {
     // GETTERS AND SETTERS
     ///////////////////////////////////////////////////////////////////////////
     /**
-     * Sets the acceleration of this FieldObject.
+     * Sets the acceleration of this Objetos.
      * 
      * @param acceleration the value of the acceleration
      */
@@ -319,9 +303,9 @@ public abstract class FieldObject extends GameObject {
 	}
 
 	/**
-	 * Gets the acceleration of this FieldObject.
+	 * Gets the acceleration of this Objetos.
 	 * 
-	 * @return the acceleration of this FieldObject
+	 * @return the acceleration of this Objetos
 	 */
 	public double getAcceleration() {
 		return acceleration;
