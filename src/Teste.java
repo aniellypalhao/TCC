@@ -1,4 +1,8 @@
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -164,12 +168,18 @@ public class Teste {
     }
     
     public static void main(String[] args) {
+        long tempoInicial = System.currentTimeMillis();
         
-         Ponto posCima = new Ponto(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, -Configuracoes.ALTURA_CAMPO / 4);
-         Ponto   posBaixo       = new Ponto(Configuracoes.LARGURA_CAMPO/2 - 0.7 * Configuracoes.LARGURA_AREA_PENALTI, Configuracoes.ALTURA_CAMPO / 4);
-    
-         System.out.println(posBaixo.render());
-         System.out.println(posCima.render());
+        long tiaAnielly = System.nanoTime();
+        for (int i = 0; i < 10; i++) {
+            int a = 1;
+        }
+        long tiaAnielly2 = System.nanoTime();
+        
+        long tempoFinal = System.currentTimeMillis();
+        
+        System.out.println(tiaAnielly2 - tiaAnielly);
+              
     }
     
     

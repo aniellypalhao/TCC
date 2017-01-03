@@ -3,6 +3,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Brain implements Runnable {
    
@@ -675,7 +677,7 @@ public class Brain implements Runnable {
 
             this.timeLastSenseBody = timeReceived;
             curSenseInfo.ciclo = Util.extractTime(message);
-            logger.log(curSenseInfo.ciclo + " : sense_body ");
+           // logger.log(curSenseInfo.ciclo + " : sense_body ");
             this.cicloUltimaSenseInfo = curSenseInfo.ciclo;
             //this.ciclo = curSenseInfo.ciclo;
 
@@ -751,67 +753,74 @@ public class Brain implements Runnable {
             }
         } // Handle `see` messages
         else if (message.startsWith("(see")) {
-            long timeSee = System.currentTimeMillis();
-            //System.out.println(player.renderizar() + " Diferença entre ultimo ciclo e o atual :  "  + (timeSee - timeLastSee)/150 + " ciclos");
-            this.timeLastSee = timeSee;
-            this.time = Util.extractTime(message);
-            logger.log(time + " : see ");
-            LinkedList<String> infos = Util.extractInfos(message);
-            lastSeenOpponents.clear();
-            companheirosVisiveis.clear();
-            for (String info : infos) {
-                String id = Util.extractId(info);
-                if (Util.isUniqueFieldObject(id)) {
-                    if(Util.isFlag(id)){
-                        //System.out.println(id);
-                        Objetos obj = this.getOrCreate(id);
-                        obj.update(this.player, info, this.time);
-                        this.fieldObjects.put(id, obj);
-                   }
-                }
-            }
-            // Immediately run for the current step. Since our computations takes only a few
-            // milliseconds, it's okay to start running over half-way into the 100ms cycle.
-            // That means two out of every three ciclo steps will be executed here.
-            this.updatePositionAndDirection();
             
-            for (String info : infos) {
-                String id = Util.extractId(info);
-                if (Util.isUniqueFieldObject(id)) {
-                    if(!Util.isFlag(id)){
-                        Objetos obj = this.getOrCreate(id);
-                        obj.update(this.player, info, this.time);
-                        this.fieldObjects.put(id, obj);
-                        if (id.startsWith("(p \"") && !(id.startsWith(this.player.time.nome, 4))) {
-                            lastSeenOpponents.add((Jogador) obj);
-                        }
-                        if (id.startsWith("(p \"") && (id.startsWith(this.player.time.nome, 4))) {
-                            companheirosVisiveis.add((Jogador) obj);
+                long timeSee = System.nanoTime();
+                //System.out.println(player.renderizar() + " Diferença entre ultimo ciclo e o atual :  "  + (timeSee - timeLastSee)/150 + " ciclos");
+                this.timeLastSee = timeSee;
+                this.time = Util.extractTime(message);
+                logger.log("" + this.time);
+                logger.log("" + timeSee);
+                LinkedList<String> infos = Util.extractInfos(message);
+                lastSeenOpponents.clear();
+                companheirosVisiveis.clear();
+                for (String info : infos) {
+                    String id = Util.extractId(info);
+                    if (Util.isUniqueFieldObject(id)) {
+                        if(Util.isFlag(id)){
+                            //System.out.println(id);
+                            Objetos obj = this.getOrCreate(id);
+                            obj.update(this.player, info, this.time);
+                            this.fieldObjects.put(id, obj);
                         }
                     }
                 }
-            }
+                // Immediately run for the current step. Since our computations takes only a few
+                // milliseconds, it's okay to start running over half-way into the 100ms cycle.
+                // That means two out of every three ciclo steps will be executed here.
+                this.updatePositionAndDirection();
+                
+                for (String info : infos) {
+                    String id = Util.extractId(info);
+                    if (Util.isUniqueFieldObject(id)) {
+                        if(!Util.isFlag(id)){
+                            Objetos obj = this.getOrCreate(id);
+                            obj.update(this.player, info, this.time);
+                            this.fieldObjects.put(id, obj);
+                            if (id.startsWith("(p \"") && !(id.startsWith(this.player.time.nome, 4))) {
+                                lastSeenOpponents.add((Jogador) obj);
+                            }
+                            if (id.startsWith("(p \"") && (id.startsWith(this.player.time.nome, 4))) {
+                                companheirosVisiveis.add((Jogador) obj);
+                            }
+                        }
+                    }
+                }
+                
+                long tempoFinal = System.nanoTime();
+                logger.log("" + tempoFinal);
+                logger.log(" dif " + (tempoFinal - timeSee));
+                logger.log("-------------------------------------");
+                this.run();
+                // Make sure we stay in sync with the mid-way `see`s
+                if (this.timeLastSee - this.timeLastSenseBody > 30) {
+                    this.responseHistory.clear();
+                    this.responseHistory.add(Configuracoes.RESPONSE.SEE);
+                    this.responseHistory.add(Configuracoes.RESPONSE.SEE);
+                } else {
+                    this.responseHistory.add(Configuracoes.RESPONSE.SEE);
+                    this.responseHistory.removeLast();
+                }
+                //Keep track of steps since the ball was last seen
+                if (canSee(Bola.ID)) {
+                    noSeeBallCount = 0;
+                    //System.out.println(player.renderizar() + " Não vejo a bola");
+                } else {
+                    noSeeBallCount++;
+                }
+             // Handle init messages
             
-            
-            this.run();
-            // Make sure we stay in sync with the mid-way `see`s
-            if (this.timeLastSee - this.timeLastSenseBody > 30) {
-                this.responseHistory.clear();
-                this.responseHistory.add(Configuracoes.RESPONSE.SEE);
-                this.responseHistory.add(Configuracoes.RESPONSE.SEE);
-            } else {
-                this.responseHistory.add(Configuracoes.RESPONSE.SEE);
-                this.responseHistory.removeLast();
-            }
-            //Keep track of steps since the ball was last seen
-            if (canSee(Bola.ID)) {
-                noSeeBallCount = 0;
-                //System.out.println(player.renderizar() + " Não vejo a bola");
-            } else {
-                noSeeBallCount++;
-            }
 
-        } // Handle init messages
+        }
         else if (message.startsWith("(init")) {
             String[] parts = message.split("\\s");
             char teamSide = message.charAt(6);
